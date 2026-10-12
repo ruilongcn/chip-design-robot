@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>芯片设计智能体团队</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <div class="logo">芯片设计智能体团队 <span class="sub">Chip Design Robot · 自主可控芯片全流程</span></div>
+  <nav>
+    <button class="tab active" data-view="arch">芯片架构</button>
+    <button class="tab" data-view="rtl">RTL 设计</button>
+    <button class="tab" data-view="veri">验证 UVM</button>
+    <button class="tab" data-view="eda">综合布线</button>
+    <button class="tab" data-view="tapeout">流片测试</button>
+    <button class="tab" data-view="soc">SoC 协同</button>
+    <button class="tab" data-view="pl">流水线</button>
+    <button class="tab" data-view="sys">系统</button>
+  </nav>
+</header>
+
+<main>
+  <!-- 芯片架构 -->
+  <section id="view-arch" class="view active">
+    <div class="panel">
+      <h3>芯片架构设计</h3>
+      <label>目标 ISA <select id="archIsa"><option>RISC-V 64GC</option><option>自主指令集</option><option>LoongArch 兼容</option></select></label>
+      <label>核心名称 <input id="archName" value="CNCore-1"></label>
+      <button onclick="aArch()">生成架构蓝图</button>
+      <button class="ghost" onclick="aMicro()">微架构设计</button>
+      <button class="ghost" onclick="aPpa()">PPA 评估</button>
+      <pre id="aResult" class="result hidden"></pre>
+    </div>
+    <div class="panel">
+      <h3>架构能力说明</h3>
+      <div class="card"><b>chip_architect</b><div class="hint">微架构选型、流水线、缓存、互联、PPA 评估，输出架构契约</div></div>
+    </div>
+  </section>
+
+  <!-- RTL -->
+  <section id="view-rtl" class="view">
+    <div class="panel">
+      <h3>RTL 设计</h3>
+      <label>模块名称 <input id="rtlName" value="cncore_top"></label>
+      <label>语言 <select id="rtlLang"><option>SystemVerilog</option><option>Verilog</option></select></label>
+      <button onclick="rModule()">模块层次设计</button>
+      <button class="ghost" onclick="rCode()">代码模板生成</button>
+      <button class="ghost" onclick="rLint()">Lint 规范检查</button>
+      <pre id="rResult" class="result hidden"></pre>
+    </div>
+    <div class="panel">
+      <h3>RTL 能力说明</h3>
+      <div class="card"><b>rtl_designer</b><div class="hint">Verilog/SystemVerilog 模块设计、代码生成、可综合风格规范</div></div>
+    </div>
+  </section>
+
+  <!-- 验证 -->
+  <section id="view-veri" class="view">
+    <div class="panel">
+      <h3>验证（UVM）</h3>
+      <button onclick="vPlan()">验证计划</button>
+      <button class="ghost" onclick="vUvm()">UVM 环境</button>
+      <button class="ghost" onclick="vCov()">覆盖率/形式验证</button>
+      <pre id="vResult" class="result hidden"></pre>
+    </div>
+    <div class="panel">
+      <h3>验证能力说明</h3>
+      <div class="card"><b>verification</b><div class="hint">UVM 环境、测试计划、覆盖率闭环、SVA 形式验证</div></div>
+    </div>
+  </section>
+
+  <!-- EDA -->
+  <section id="view-eda" class="view">
+    <div class="panel">
+      <h3>综合 / 布局布线</h3>
+      <button onclick="eSynth()">逻辑综合流程</button>
+      <button class="ghost" onclick="ePnr()">布局布线/时序收敛</button>
+      <button class="ghost" onclick="eDft()">DFT 设计</button>
+      <pre id="eResult" class="result hidden"></pre>
+    </div>
+    <div class="panel">
+      <h3>EDA 能力说明</h3>
+      <div class="card"><b>eda_flow</b><div class="hint">开源 EDA 工具链（Yosys/OpenLane）+ 商用辅助，综合/布局/DFT</div></div>
+    </div>
+  </section>
+
+  <!-- 流片测试 -->
+  <section id="view-tapeout" class="view">
+    <div class="panel">
+      <h3>流片与封装测试</h3>
+      <button onclick="tTapeout()">流片签核清单</button>
+      <button class="ghost" onclick="tPackage()">封装设计</button>
+      <button class="ghost" onclick="tTest()">ATE 测试/可靠性</button>
+      <pre id="tResult" class="result hidden"></pre>
+    </div>
+    <div class="panel">
+      <h3>流片能力说明</h3>
+      <div class="card"><b>tapeout_test</b><div class="hint">流片签核、封装选型、ATE 测试、良率闭环</div></div>
+    </div>
+  </section>
+
+  <!-- SoC 协同 -->
+  <section id="view-soc" class="view">
+    <div class="panel">
+      <h3>芯片-固件-OS 协同</h3>
+      <button onclick="sSoc()">SoC 集成架构</button>
+      <button class="ghost" onclick="sBoot()">启动链路设计</button>
+      <button class="ghost" onclick="sEco()">生态协同规划</button>
+      <pre id="sResult" class="result hidden"></pre>
+    </div>
+    <div class="panel">
+      <h3>协同能力说明</h3>
+      <div class="card"><b>soc_coord</b><div class="hint">芯片与指令集/BIOS/OS 协同、SoC 集成、启动安全链</div></div>
+    </div>
+  </section>
+
+  <!-- 流水线 -->
+  <section id="view-pl" class="view">
+    <div class="panel">
+      <h3>芯片设计流水线编排</h3>
+      <label>目标描述 <input id="plGoal" placeholder="如：设计自主 CPU 芯片，完成 RTL、验证、EDA、流片与协同规划"></label>
+      <button onclick="plRun()">运行流水线</button>
+      <pre id="plResult" class="result hidden"></pre>
+    </div>
+  </section>
+
+  <!-- 系统 -->
+  <section id="view-sys" class="view">
+    <div class="panel"><h3>系统健康</h3><pre id="sysHealth" class="result"></pre></div>
+    <div class="panel"><h3>智能体列表</h3><div id="sysCards" class="cards"></div></div>
+  </section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>
